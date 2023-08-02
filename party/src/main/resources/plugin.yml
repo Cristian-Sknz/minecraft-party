@@ -1,0 +1,6 @@
+main: me.sknz.minecraft.party.Party
+name: party
+version: 1.0
+author: SknZ
+depend:
+  - common
