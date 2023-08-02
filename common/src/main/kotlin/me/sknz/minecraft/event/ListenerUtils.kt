@@ -3,17 +3,22 @@ package me.sknz.minecraft.event
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 import org.reactivestreams.Publisher
+import reactor.core.publisher.Mono
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KType
-import kotlin.reflect.full.*
+import kotlin.reflect.full.companionObject
+import kotlin.reflect.full.companionObjectInstance
+import kotlin.reflect.full.declaredFunctions
+import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.ExperimentalReflectionOnLambdas
 import kotlin.reflect.jvm.isAccessible
-import kotlin.reflect.jvm.kotlinFunction
 import kotlin.reflect.jvm.reflect
 
+typealias ListenerExecutor<T> = (Mono<T>) -> Unit
+
 @OptIn(ExperimentalReflectionOnLambdas::class)
-fun <T : Event> ListenerExecutor<T>.getHandlerList(): HandlerList {
+fun <T : Event> ListenerExecutor<T>.getHandlerListFromExecutor(): HandlerList {
     val event = (this.reflect()!!.parameters[0].type.arguments[0].type!!.classifier as KClass<*>)
     val getHandlerList = event.declaredFunctions.find { it.name == "getHandlerList" }
         ?: throw IllegalArgumentException("Sem nenhum evento")
@@ -21,7 +26,7 @@ fun <T : Event> ListenerExecutor<T>.getHandlerList(): HandlerList {
     return getHandlerList.call() as HandlerList
 }
 
-fun <T : Event> KClass<T>.getHandlerList(): HandlerList {
+fun <T : Event> KClass<T>.getHandlerListFromEvent(): HandlerList {
     val getHandlerList = this.declaredFunctions.find { it.name == "getHandlerList" }
         ?: this.companionObject?.declaredFunctions?.find { it.name == "getHandlerList" }
         ?: throw IllegalArgumentException("Não foi encontrado nenhuma lista de manipulação (getHandlerList)")
@@ -45,6 +50,6 @@ fun KType.isEvent(): Boolean {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun KFunction<*>.getEvent(): KClass<Event> {
+fun KFunction<*>.getEventFromParameter(): KClass<Event> {
     return this.parameters[1].type.arguments[0].type?.classifier!! as KClass<Event>
 }

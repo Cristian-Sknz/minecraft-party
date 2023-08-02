@@ -1,5 +1,6 @@
 package me.sknz.minecraft.event
 
+import me.sknz.minecraft.event.impl.ListenerManager
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent

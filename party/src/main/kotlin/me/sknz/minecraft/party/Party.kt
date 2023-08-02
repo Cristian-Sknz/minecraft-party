@@ -2,7 +2,7 @@ package me.sknz.minecraft.party
 
 import me.sknz.minecraft.KotlinPlugin
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
-import me.sknz.minecraft.event.ListenerManager
+import me.sknz.minecraft.event.impl.ListenerManager
 import me.sknz.minecraft.party.events.GameStateChange
 import me.sknz.minecraft.reactive.BukkitScheduler
 import me.sknz.minecraft.reactive.BukkitSchedulerFactory

@@ -1,7 +1,7 @@
 package me.sknz.minecraft.party.map
 
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
-import me.sknz.minecraft.event.ListenerManager
+import me.sknz.minecraft.event.impl.ListenerManager
 import me.sknz.minecraft.party.events.GameListener
 import me.sknz.minecraft.party.events.GameTimer
 import me.sknz.minecraft.party.getMatchScoreboard
