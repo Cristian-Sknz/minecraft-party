@@ -21,6 +21,7 @@ abstract class ItemHandler(val type: Material,
         val SELECT_AND_CLICK: EnumSet<Action> = EnumSet.of(Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK, Action.RIGHT_CLICK_BLOCK)
         val RIGHT_CLICK: EnumSet<Action> = EnumSet.of(Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK)
         val LEFT_CLICK: EnumSet<Action> = EnumSet.of(Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK)
+        val ALL_CLICK: EnumSet<Action> =  EnumSet.of(Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK, Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK)
     }
 
     abstract fun onClick(player: Player, item: ItemStack, scope: ItemHandlerScope)
