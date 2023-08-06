@@ -3,6 +3,7 @@ package me.sknz.minecraft.party.inventory
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
 import me.sknz.minecraft.inventory.ItemHandler
 import me.sknz.minecraft.inventory.applyMetaData
+import me.sknz.minecraft.party.configurations.WorkshopConfiguration
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -13,7 +14,8 @@ import java.util.*
 import kotlin.math.abs
 
 @OptIn(ExperimentalPluginFeature::class)
-class WorkbenchItemHandler: ItemHandler(Material.WORKBENCH, "Quadro de Crafting", SELECT_AND_CLICK) {
+class WorkbenchItemHandler(val configuration: WorkshopConfiguration)
+    : ItemHandler(Material.WORKBENCH, "Quadro de Crafting", SELECT_AND_CLICK) {
 
     private val selection: HashMap<UUID, Pair<Block, BlockFace>> = hashMapOf()
 
@@ -39,7 +41,6 @@ class WorkbenchItemHandler: ItemHandler(Material.WORKBENCH, "Quadro de Crafting"
                 displayName = "$displayName §3(${block.x}, ${block.y}, ${block.z})"
             }
 
-
             selection[player.uniqueId] = block to face
             player.updateInventory()
             return
@@ -53,7 +54,10 @@ class WorkbenchItemHandler: ItemHandler(Material.WORKBENCH, "Quadro de Crafting"
             displayName = displayName.substringBefore(" §3(")
         }
 
+        val storedBlock = selection[player.uniqueId]!!.first
+        configuration.setFrame(storedBlock.location, block.location)
         selection.remove(player.uniqueId)
+
         player.updateInventory()
         player.sendMessage("§e[Configuração] §aNova posição do §6Quadro de Crafting§a foi setado.")
     }

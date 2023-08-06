@@ -9,4 +9,6 @@ import org.bukkit.Location
  */
 interface GameConfiguration {
     var location: Location
+
+    fun save(): Unit
 }

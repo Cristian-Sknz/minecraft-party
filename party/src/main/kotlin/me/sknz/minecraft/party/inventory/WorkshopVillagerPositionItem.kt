@@ -3,23 +3,26 @@ package me.sknz.minecraft.party.inventory
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
 import me.sknz.minecraft.inventory.ItemHandler
 import me.sknz.minecraft.inventory.applyMetaData
+import me.sknz.minecraft.party.configurations.WorkshopConfiguration
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.inventory.ItemStack
 import java.util.*
-import javax.swing.plaf.basic.BasicComboBoxUI
 
 @OptIn(ExperimentalPluginFeature::class)
-class WorkshopVillagerPositionItem :
+class WorkshopVillagerPositionItem(val configuration: WorkshopConfiguration) :
     ItemHandler(Material.MONSTER_EGG, "Posição do Aldeão de Troca", EnumSet.of(Action.RIGHT_CLICK_BLOCK)) {
+
     override fun onClick(player: Player, item: ItemStack, scope: ItemHandlerScope) {
         val block = scope.block!!
         item.applyMetaData {
             displayName = displayName.substringBefore(" §3(")
             displayName = "$name §3(${block.x}, ${block.y}, ${block.z})"
         }
+
+        configuration.villager = block.location
 
         player.updateInventory()
         player.sendMessage("§e[Configuração] §aVocê setou o spawn do villager em §e(${block.x}, ${block.y}, ${block.z})")
