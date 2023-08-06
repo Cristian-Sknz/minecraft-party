@@ -8,7 +8,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.ItemFrame
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ShapedRecipe
-import java.util.TreeSet
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.floor
 

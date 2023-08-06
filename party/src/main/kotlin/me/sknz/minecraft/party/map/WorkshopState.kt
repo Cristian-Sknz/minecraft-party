@@ -2,11 +2,10 @@ package me.sknz.minecraft.party.map
 
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
 import me.sknz.minecraft.event.impl.ListenerManager
-import me.sknz.minecraft.party.events.PartyGameState
 import me.sknz.minecraft.party.events.GameTimer
+import me.sknz.minecraft.party.events.PartyGameState
 import me.sknz.minecraft.party.getMatchScoreboard
 import me.sknz.minecraft.party.instance
-import me.sknz.minecraft.party.listeners.GameWorkshopListener
 import me.sknz.minecraft.party.model.PartyGameData
 import me.sknz.minecraft.scoreboard.BetterScoreboard
 import org.bukkit.Bukkit
@@ -15,7 +14,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import java.util.*
 import java.util.concurrent.TimeUnit
-import java.util.function.Function
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalPluginFeature::class)
