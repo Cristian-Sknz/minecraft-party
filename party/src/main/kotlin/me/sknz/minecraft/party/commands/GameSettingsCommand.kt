@@ -28,17 +28,21 @@ class GameSettingsCommand: Command("settings") {
     }
 
     override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): List<String> {
-        if (args.isEmpty()) {
-            return PartyGame.entries.sortedBy { it.name }.map { it.name }
-        }
+        return when (args.size - 1) {
+            0 -> {
+                if (args[0].isEmpty()) {
+                   return PartyGame.entries
+                       .sortedBy { it.name }
+                       .map { it.name.lowercase() }
+                }
 
-        if (args.size == 1) {
-            return PartyGame.entries
-                .sortedBy { it.name }
-                .map { it.name }
-                .filter { it.equals(args[0], true)}
-        }
+                return PartyGame.entries
+                    .sortedBy { it.name }
+                    .map { it.name.lowercase() }
+                    .filter { it.contains(args[0], true)}
+            }
 
-        return emptyList()
+            else -> emptyList()
+        }
     }
 }
