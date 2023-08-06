@@ -5,12 +5,14 @@ plugins {
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
     compileOnly(project(":common"))
     compileOnly("org.github.paperspigot:paperspigot-api:1.8.8-R0.1-SNAPSHOT")
+    compileOnly("com.github.azbh111:craftbukkit-1.8.8:R")
     compileOnly(kotlin("reflect"))
 
     testImplementation("org.mockito:mockito-core:3.12.0")
