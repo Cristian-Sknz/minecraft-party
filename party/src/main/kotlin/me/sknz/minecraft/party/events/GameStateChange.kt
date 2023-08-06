@@ -6,13 +6,14 @@ import org.bukkit.event.HandlerList
 class GameStateChange(var state: GameState, val payload: Any? = null) : Event() {
 
     enum class GameState {
+        CONFIGURATION,
         STARTING,
         IN_GAME,
         FINISHING,
     }
 
     override fun getHandlers(): HandlerList {
-        return GameStateChange.handler
+        return handler
     }
 
     companion object {

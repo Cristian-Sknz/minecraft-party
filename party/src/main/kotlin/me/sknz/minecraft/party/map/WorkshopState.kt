@@ -2,35 +2,34 @@ package me.sknz.minecraft.party.map
 
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
 import me.sknz.minecraft.event.impl.ListenerManager
-import me.sknz.minecraft.party.events.GameListener
+import me.sknz.minecraft.party.events.PartyGameState
 import me.sknz.minecraft.party.events.GameTimer
 import me.sknz.minecraft.party.getMatchScoreboard
 import me.sknz.minecraft.party.instance
 import me.sknz.minecraft.party.listeners.GameWorkshopListener
-import me.sknz.minecraft.party.states.PartyGameData
+import me.sknz.minecraft.party.model.PartyGameData
 import me.sknz.minecraft.scoreboard.BetterScoreboard
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.Player
+import org.bukkit.event.Listener
 import java.util.*
 import java.util.concurrent.TimeUnit
+import java.util.function.Function
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalPluginFeature::class)
 class WorkshopState(
     private val manager: ListenerManager,
     private val partyGameData: PartyGameData,
-    listener: (WorkshopState) -> GameWorkshopListener,
-) : GameListener() {
+    vararg listeners: (WorkshopState) -> Listener
+) : PartyGameState() {
+
+    private val listeners by onMount { listeners.map { it(this) } }
+    private val players by onMount(::createWorkshopPlayers)
 
     private val startingTimer by onMount { GameTimer(10).apply { start() } }
     private val timer by onMount { GameTimer(TimeUnit.MINUTES.toSeconds(2)) }
-
-    private val listener by onMount { listener(this) }
-    private val players by onMount {
-        partyGameData.players.mapNotNull { p -> Bukkit.getPlayer(p.player)?.let { it to p.scoreboard } }
-            .map { WorkshopPlayer(it.first.uniqueId, it.first.displayName, it.second) }
-    }
 
     data class WorkshopPlayer(
         val player: UUID,
@@ -77,11 +76,17 @@ class WorkshopState(
             Bukkit.getOnlinePlayers().forEach { it.playSound(it.location, Sound.NOTE_PLING, 10F, 5F) }
         }
 
-        manager.registerAll(listener)
+        listeners.forEach(manager::registerAll)
     }
 
     override fun unmount() {
-        manager.unregisterAll(listener)
+        listeners.forEach(manager::unregisterAll)
+    }
+
+    private fun createWorkshopPlayers(): List<WorkshopPlayer> {
+        return partyGameData.players
+            .mapNotNull { p -> Bukkit.getPlayer(p.player)?.let { it to p.scoreboard } }
+            .map { WorkshopPlayer(it.first.uniqueId, it.first.displayName, it.second) }
     }
 
     fun getAvailablePlayers(): List<Pair<Player, BetterScoreboard>> {

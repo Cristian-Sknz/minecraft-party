@@ -27,7 +27,7 @@ class WorkbenchItemFrame(selection: Pair<BlockWithFace, BlockWithFace>) {
     private var recipe: ShapedRecipe? = null
         set(value) {
             field = value
-            setRecipe(value)
+            setItemFramesRecipe(value)
         }
 
     init {
@@ -43,7 +43,7 @@ class WorkbenchItemFrame(selection: Pair<BlockWithFace, BlockWithFace>) {
         this.recipe = null
     }
 
-    private fun setRecipe(recipe: ShapedRecipe? = null) {
+    private fun setItemFramesRecipe(recipe: ShapedRecipe? = null) {
         val frames = blocks[4].let { it.world.getNearbyEntities(it.location, it.x.toDouble(), it.y.toDouble(), it.z.toDouble()) }
             .filterIsInstance<ItemFrame>()
             .distinct()

@@ -2,7 +2,7 @@ package me.sknz.minecraft.party.map
 
 import me.sknz.minecraft.event.impl.ListenerManager
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
-import me.sknz.minecraft.party.events.GameListener
+import me.sknz.minecraft.party.events.PartyGameState
 import me.sknz.minecraft.party.events.GameStateChange
 import me.sknz.minecraft.party.events.GameTimer
 import me.sknz.minecraft.party.getStartingScoreboard
@@ -10,15 +10,16 @@ import me.sknz.minecraft.party.scoreboard
 import me.sknz.minecraft.party.listeners.GameStartingListener
 import org.bukkit.Bukkit
 import org.bukkit.Server
+import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalPluginFeature::class)
 class GameStartingState(
     private val manager: ListenerManager,
     listener: (GameStartingState) -> GameStartingListener
-) : GameListener() {
+) : PartyGameState() {
 
-    private val timer by onMount { GameTimer(30).apply { start() } }
+    private val timer by onMount { GameTimer(TimeUnit.MINUTES.toSeconds(5)).apply { start() } }
     private val listener by onMount { listener(this) }
 
     val scoreboard by onMount { scoreboard(getStartingScoreboard()) }
@@ -28,7 +29,10 @@ class GameStartingState(
 
         timer.timer
             .map { it.seconds.toComponents { m, s, _ -> "§a%02d:%02d".format(m, s) } }
-            .doOnComplete { Bukkit.getPluginManager().callEvent(GameStateChange(GameStateChange.GameState.IN_GAME)) }
+            .doOnComplete {
+                if (!this.timer.isStopped)
+                    Bukkit.getPluginManager().callEvent(GameStateChange(GameStateChange.GameState.IN_GAME))
+            }
             .subscribe { scoreboard[4] = "§fIniciando em §a${it}" }
 
         timer.timer
@@ -42,7 +46,7 @@ class GameStartingState(
     }
 
     override fun unmount() {
-        timer.isStopped = false
+        timer.isStopped = true
         manager.unregisterAll(listener)
     }
 }

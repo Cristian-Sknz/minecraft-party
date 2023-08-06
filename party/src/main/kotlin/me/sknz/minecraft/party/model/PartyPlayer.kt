@@ -1,4 +1,4 @@
-package me.sknz.minecraft.party.states
+package me.sknz.minecraft.party.model
 
 import me.sknz.minecraft.scoreboard.BetterScoreboard
 import org.bukkit.Bukkit

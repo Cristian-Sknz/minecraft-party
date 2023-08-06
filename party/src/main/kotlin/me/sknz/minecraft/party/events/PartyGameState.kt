@@ -11,7 +11,7 @@ import kotlin.reflect.KProperty
  * ciclos de vida de um game.
  */
 @ExperimentalPluginFeature
-abstract class GameListener {
+abstract class PartyGameState {
 
     private val mounts = mutableListOf<MountReadonlyProperty<*>>()
 
@@ -30,7 +30,7 @@ abstract class GameListener {
      * É recomendado iniciar todas as dependencias e eventos, apartir desta função.
      */
     open fun mount() {
-        mounts.forEach { it.initialize() }
+        mounts.forEach(MountReadonlyProperty<*>::initialize)
     }
 
     /**
@@ -41,13 +41,13 @@ abstract class GameListener {
     abstract fun unmount()
 
     @ExperimentalPluginFeature
-    class MountReadonlyProperty<V>(private val init: () -> V) : ReadOnlyProperty<GameListener, V> {
+    class MountReadonlyProperty<V>(private val init: () -> V) : ReadOnlyProperty<PartyGameState, V> {
 
         var mounted: V? = null
 
         fun initialize() = let { mounted = init() }
 
-        override fun getValue(thisRef: GameListener, property: KProperty<*>): V {
+        override fun getValue(thisRef: PartyGameState, property: KProperty<*>): V {
             return mounted ?: throw RuntimeException()
         }
     }

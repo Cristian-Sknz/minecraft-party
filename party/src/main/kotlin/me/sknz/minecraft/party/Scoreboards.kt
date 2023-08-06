@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter
 typealias ScoreboardData = Pair<String, String>
 
 const val MINIGAME_SCOREBOARD = "Party Games"
+const val SITE = "thunderplex.net"
 
 fun scoreboard(data: ScoreboardData): BetterScoreboard {
     return BetterScoreboard(Bukkit.getScoreboardManager().newScoreboard, data.first, data.second)
@@ -24,7 +25,7 @@ fun getStartingScoreboard(): ScoreboardData {
         §fpara dar tempo a
         §fjogadores adicionais
         
-        §ewww.sknz.dev
+        §e${SITE}
     """.trimIndent()
 }
 
@@ -42,6 +43,20 @@ fun getMatchScoreboard(game: String, player: String, players: List<String>): Sco
         §fJogos: 1/4
         §fEstrelas: §a 0
         
-        §ewww.sknz.dev
+        §e${SITE}
+    """.trimIndent()
+}
+
+fun getConfigurationScoreboard(game: String): ScoreboardData {
+    return "§e§l${MINIGAME_SCOREBOARD.uppercase()}" to """
+        §7${LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd/yy"))}
+        
+        §fGame: §a§l${game}
+
+        §fVocê está no modo
+        §fde configuração do
+        §fparty games.
+        
+        §e${SITE}
     """.trimIndent()
 }
