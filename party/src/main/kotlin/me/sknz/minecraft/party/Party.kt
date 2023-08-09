@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import me.sknz.minecraft.KotlinPlugin
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
 import me.sknz.minecraft.event.impl.ListenerManager
+import me.sknz.minecraft.extentions.unregister
 import me.sknz.minecraft.json.BukkitModule
 import me.sknz.minecraft.party.commands.GameSettingsCommand
 import me.sknz.minecraft.party.events.GameStateChange
@@ -28,8 +29,6 @@ class Party : KotlinPlugin() {
         super.onEnable()
 
         manager.registerAll(GameController(manager))
-
-        Bukkit.getCommandMap().register("settings", GameSettingsCommand())
 
         Bukkit.getLogger().info("[party] Plugin carregado")
         Bukkit.getPluginManager().callEvent(GameStateChange(GameStateChange.GameState.STARTING))
