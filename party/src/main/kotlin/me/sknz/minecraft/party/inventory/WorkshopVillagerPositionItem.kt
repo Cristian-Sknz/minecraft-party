@@ -22,7 +22,7 @@ class WorkshopVillagerPositionItem(val configuration: WorkshopConfiguration) :
             displayName = "$name §3(${block.x}, ${block.y}, ${block.z})"
         }
 
-        configuration.villager = block.location
+        configuration.villager = block.location.apply { x += 0.5F; z += 0.5F; y++ }
 
         player.updateInventory()
         player.sendMessage("§e[Configuração] §aVocê setou o spawn do villager em §e(${block.x}, ${block.y}, ${block.z})")
