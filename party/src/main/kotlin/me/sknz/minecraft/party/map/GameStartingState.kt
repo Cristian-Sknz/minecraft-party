@@ -2,7 +2,9 @@ package me.sknz.minecraft.party.map
 
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
 import me.sknz.minecraft.event.impl.ListenerManager
-import me.sknz.minecraft.extentions.unregisterAll
+import me.sknz.minecraft.extentions.PlayerUtils.setScoreboard
+import me.sknz.minecraft.extentions.PlayerUtils.setTab
+import me.sknz.minecraft.extentions.CommandMapUtils.unregisterAll
 import me.sknz.minecraft.party.commands.GameSettingsCommand
 import me.sknz.minecraft.party.commands.GameTimerCommand
 import me.sknz.minecraft.party.events.GameStateChange
@@ -13,6 +15,7 @@ import me.sknz.minecraft.party.listeners.GameStartingListener
 import me.sknz.minecraft.party.scoreboard
 import org.bukkit.Bukkit
 import org.bukkit.Server
+import org.bukkit.entity.Player
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.seconds
 
@@ -24,22 +27,25 @@ class GameStartingState(
 
     private val listener by onMount { listener(this) }
 
-    val timer by onMount { GameTimer(TimeUnit.MINUTES.toSeconds(3)) }
+    val gameTimer by onMount { GameTimer(TimeUnit.MINUTES.toSeconds(3)) }
     val scoreboard by onMount { scoreboard(getStartingScoreboard()) }
-    val commands by onMount { listOf(GameSettingsCommand(), GameTimerCommand(timer)) }
+    val commands by onMount { listOf(GameSettingsCommand(), GameTimerCommand(gameTimer)) }
 
     override fun mount() {
         super.mount()
+        for (player in Bukkit.getOnlinePlayers()) {
+            setStateToPlayer(player)
+        }
 
-        timer.timer
+        gameTimer.timer
             .map { it.seconds.toComponents { m, s, _ -> "§a%02d:%02d".format(m, s) } }
             .doOnComplete {
-                if (this.timer.isComplete) Bukkit.getPluginManager()
+                if (this.gameTimer.isComplete) Bukkit.getPluginManager()
                     .callEvent(GameStateChange(GameStateChange.GameState.IN_GAME))
             }
             .subscribe { scoreboard[4] = "§fIniciando em §a${it}" }
 
-        timer.timer
+        gameTimer.timer
             .filter { it != 0L && it % 15 == 0L }
             .map { it.seconds.toComponents { m, s, _ -> "§a%02dm%02ds".format(m, s) } }
             .subscribe {
@@ -50,8 +56,15 @@ class GameStartingState(
         Bukkit.getCommandMap().registerAll("party", commands)
     }
 
+    fun setStateToPlayer(player: Player) {
+        player.setScoreboard(scoreboard)
+        player.setTab("§e§lPARTY GAMES", "§ethunderplex.net")
+        player.teleport(Bukkit.getWorlds()[0].spawnLocation)
+        player.inventory.clear()
+    }
+
     override fun unmount() {
-        timer.stop()
+        gameTimer.stop()
         manager.unregisterAll(listener)
         Bukkit.getCommandMap().unregisterAll(commands)
     }

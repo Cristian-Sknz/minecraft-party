@@ -1,8 +1,6 @@
 package me.sknz.minecraft.party.listeners
 
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
-import me.sknz.minecraft.extentions.setScoreboard
-import me.sknz.minecraft.extentions.setTab
 import me.sknz.minecraft.party.map.GameStartingState
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
@@ -22,18 +20,13 @@ class GameStartingListener(private val state: GameStartingState) : Listener {
     fun onNewPlayerJoin(event: Mono<PlayerJoinEvent>) = event.doOnNext {
         it.joinMessage = "§7${it.player.displayName}§e entrou no Jogo! (§b${Bukkit.getOnlinePlayers().size}§e/§b8§e)"
         state.scoreboard[6] = "§fJogadores: §a${Bukkit.getOnlinePlayers().size}/8"
-    }.map { it.player }.subscribe {
-        it.setScoreboard(state.scoreboard)
-        it.setTab("§e§lPARTY GAMES", "§ethunderplex.net")
-        it.teleport(Bukkit.getWorlds()[0].spawnLocation)
-        it.inventory.clear()
-    }
+    }.map { it.player }.subscribe(state::setStateToPlayer)
 
     @OptIn(ExperimentalPluginFeature::class)
     @EventHandler
     fun onTimerStart(event: Mono<PlayerJoinEvent>) = event.subscribe {
         if (Bukkit.getOnlinePlayers().size >= 4) {
-            state.timer.play()
+            state.gameTimer.play()
             return@subscribe
         }
     }
@@ -45,8 +38,8 @@ class GameStartingListener(private val state: GameStartingState) : Listener {
             return@subscribe
         }
         it.quitMessage = ""
-        state.timer.pause()
-        state.timer.reset()
+        state.gameTimer.pause()
+        state.gameTimer.reset()
     }
 
     @EventHandler

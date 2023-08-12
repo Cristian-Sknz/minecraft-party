@@ -35,6 +35,7 @@ class GameController(private val manager: ListenerManager) : Listener {
                 }
             }
             STARTING -> {
+                actual?.unmount()
                 actual = GameStartingState(manager, ::GameStartingListener).apply { mount() }
             }
             IN_GAME -> {
