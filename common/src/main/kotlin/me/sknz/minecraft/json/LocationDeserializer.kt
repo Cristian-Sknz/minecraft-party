@@ -14,7 +14,7 @@ object LocationDeserializer : JsonDeserializer<Location>() {
         val world = Bukkit.getWorld(node.get("world").asText())
 
         val array = node.get("coordinates").map { it.asDouble() }
-        if (array.size == 5) {
+        if (array.size != 5) {
             return Location(world, array[0], array[1], array[2])
         }
 
