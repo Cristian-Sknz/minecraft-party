@@ -37,7 +37,7 @@ class GameTimer(val initialTime: GameTime) {
 
         isPaused = false
         task = instance.async.schedulePeriodically({
-            if (time == 0L) {
+            if (time <= 0L) {
                 isComplete = true
                 sinks.tryEmitComplete()
                 task!!.dispose()
