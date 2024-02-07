@@ -2,6 +2,7 @@ package me.sknz.minecraft.party.configurations
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import me.sknz.minecraft.party.instance
+import me.sknz.minecraft.json
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import java.io.File
@@ -29,7 +30,7 @@ class WorkshopConfiguration: GameConfiguration {
 
     override fun save() {
         val output = FileOutputStream(File(file!!))
-        instance.mapper.writeValue(output, this)
+        json.writeValue(output, this)
     }
 
     companion object {
@@ -41,11 +42,11 @@ class WorkshopConfiguration: GameConfiguration {
 
                 return WorkshopConfiguration().apply {
                     this.file = file.absolutePath
-                    instance.mapper.writeValue(FileOutputStream(file), this)
+                    json.writeValue(FileOutputStream(file), this)
                 }
             }
 
-            return instance.mapper.readValue(file, WorkshopConfiguration::class.java).apply {
+            return json.readValue(file, WorkshopConfiguration::class.java).apply {
                 this.file = file.absolutePath
             }
         }

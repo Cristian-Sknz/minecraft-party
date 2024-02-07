@@ -9,9 +9,12 @@ import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.Action
+import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerInventoryEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerPickupItemEvent
 import org.bukkit.inventory.ItemStack
 import reactor.core.publisher.Mono
 import java.util.*
@@ -21,13 +24,16 @@ class GameWorkshopConfiguration(state: GameConfigurationState) : GameConfigurati
 
     override val configuration = WorkshopConfiguration.load()
 
-    private val handlers: List<ItemHandler> = listOf(
-        SaveConfigurationItemHandler(configuration),
-        WorkbenchItemHandler(configuration),
-        WorkshopBlockItemHandler(configuration),
-        WorkshopPlayerPositionItem(configuration),
-        WorkshopVillagerPositionItem(configuration)
-    )
+    private val configState = hashMapOf<UUID, Int?>()
+    private val handlers: List<ItemHandler> = let {
+        listOf(
+            SaveConfigurationItemHandler(configuration),
+            WorkbenchItemHandler(configuration, configState),
+            WorkshopBlockItemHandler(configuration, configState),
+            WorkshopPlayerPositionItem(configuration, configState),
+            WorkshopVillagerPositionItem(configuration, configState)
+        )
+    }
 
     override val inventory: Map<Int, ItemStack> by workshopInventory()
 

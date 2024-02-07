@@ -1,0 +1,19 @@
+# Configuração do Jogo Workshop
+# ESTE ARQUIVO NÃO DEVE SER MODIFICADO MANUALMENTE
+
+game: "Workshop"
+
+location: 0.0, 0.0, 0.0,  0.0   0.0
+spawns:
+  # x     y    z   pitch  yaw
+  - 0.0, 0.0, 0.0,  0.0   0.0
+
+itemframe:
+  # x     y    z   pitch  yaw
+  - 5.0, 0.0, 0.0,  0.0   0.0
+  - 5.0, 0.0, 0.0,  0.0   0.0
+
+blocks:
+  # x     y    z   pitch  yaw
+  - 5.0, 0.0, 0.0,  0.0   0.0
+  - 5.0, 0.0, 0.0,  0.0   0.0

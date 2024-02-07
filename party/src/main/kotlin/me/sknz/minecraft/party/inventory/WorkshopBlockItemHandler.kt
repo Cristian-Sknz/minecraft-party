@@ -4,26 +4,30 @@ import me.sknz.minecraft.annotations.ExperimentalPluginFeature
 import me.sknz.minecraft.inventory.ItemHandler
 import me.sknz.minecraft.inventory.applyMetaData
 import me.sknz.minecraft.party.configurations.WorkshopConfiguration
+import me.sknz.minecraft.party.configurations.WorkshopPlayerConfiguration
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.util.Vector
 import java.util.*
 
 @OptIn(ExperimentalPluginFeature::class)
-class WorkshopBlockItemHandler(val configuration: WorkshopConfiguration)
+class WorkshopBlockItemHandler(val configuration: WorkshopPlayerConfiguration, private val state: Map<UUID, Int?>)
     : ItemHandler(Material.NAME_TAG, "Blocos de Interação", SELECT_AND_CLICK) {
 
     private val selection: HashMap<UUID, Block> = hashMapOf()
 
     override fun onClick(player: Player, item: ItemStack, scope: ItemHandlerScope) {
+        if (state[player.uniqueId] == null) {
+            player.sendMessage("§cVocê precisa selecionar um spawn para configurar os blocos.")
+            return
+        }
+
         if (scope.isLeftClick()) {
-            item.applyMetaData {
-                displayName = displayName.substringBefore(" §3(")
-                displayName = "$displayName §3(Nova seleção)"
-            }
+            onUpdateItem(player, item)
             player.sendMessage("§e[Configuração] §aVocê resetou a sua seleção")
             return
         }
@@ -51,7 +55,7 @@ class WorkshopBlockItemHandler(val configuration: WorkshopConfiguration)
         }
 
         selection.remove(player.uniqueId)
-        configuration.setFrame(storedBlock.location, block.location)
+        configuration[state[player.uniqueId]!!].frame = listOf(storedBlock.location, block.location)
 
         val minY = minOf(storedBlock.y, block.y)
         val maxY = maxOf(storedBlock.y, block.y)
@@ -65,24 +69,29 @@ class WorkshopBlockItemHandler(val configuration: WorkshopConfiguration)
             if (isSameX) block.z else block.x,
         )
 
-        val locations = mutableListOf<Location>()
+        val locations = mutableListOf<Vector>()
         for (xz in minXZ..maxXZ) for (y in minY..maxY) {
             locations.add(block.world.getBlockAt(
                 if (isSameX) block.x else xz,
                 y,
                 if (!isSameX) block.z else xz
-            ).location)
+            ).location.toVector())
         }
 
-        configuration.blocks.addAll(locations)
+        configuration[state[player.uniqueId]!!].blocks.addAll(locations)
+        onUpdateItem(player, item)
+        player.sendMessage("§e[Configuração]§a Adicionado blocos dos minigames.")
+    }
 
+
+    override fun onUpdateItem(player: Player, item: ItemStack) {
+        selection.remove(player.uniqueId)
         item.applyMetaData {
             displayName = displayName.substringBefore(" §3(")
             displayName = "$displayName §3(Nova seleção)"
         }
 
         player.updateInventory()
-        player.sendMessage("§e[Configuração]§a Adicionado blocos dos minigames.")
     }
 
     override fun getItemCopy(): ItemStack {

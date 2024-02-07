@@ -1,13 +1,14 @@
 package me.sknz.minecraft
 
+import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
+import kotlinx.coroutines.runBlocking
 import me.sknz.minecraft.annotations.ExperimentalPluginFeature
 import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.java.JavaPlugin
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 @ExperimentalPluginFeature
-open class KotlinPlugin: JavaPlugin() {
+open class KotlinPlugin: SuspendingJavaPlugin() {
 
     private val onLoads: MutableList<PluginReadOnlyProperty<Plugin, Plugin, *>> = mutableListOf()
     private val onEnables: MutableList<PluginReadOnlyProperty<Plugin, Plugin, *>> = mutableListOf()
@@ -20,13 +21,13 @@ open class KotlinPlugin: JavaPlugin() {
         return PluginReadOnlyProperty<Plugin, Plugin, T>(initializer).let { onEnables.add(it); it }
     }
 
-    override fun onLoad() {
-        onLoads.forEach { it.initialize(this) }
-        super.onLoad()
+    override fun onLoad() = runBlocking {
+        onLoads.forEach { it.initialize(this@KotlinPlugin) }
+        onLoadAsync()
     }
 
-    override fun onEnable() {
-        onEnables.forEach { it.initialize(this) }
+    override fun onEnable() = runBlocking {
+        onEnables.forEach { it.initialize(this@KotlinPlugin) }
         super.onEnable()
     }
 

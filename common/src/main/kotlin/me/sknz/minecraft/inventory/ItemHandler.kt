@@ -27,6 +27,7 @@ abstract class ItemHandler(val type: Material,
     abstract fun onClick(player: Player, item: ItemStack, scope: ItemHandlerScope)
 
     open fun getItemCopy(): ItemStack = throw NotImplementedError()
+    open fun onUpdateItem(player: Player, item: ItemStack): Unit = throw NotImplementedError()
 
     data class ItemHandlerScope(val action: Action,
                            val block: Block? = null,

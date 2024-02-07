@@ -21,7 +21,7 @@ fun getStartingScoreboard(): ScoreboardData {
         §fMapa: §a${MINIGAME_SCOREBOARD}
         §fJogadores: §a0/8
         
-        §fIniciando em §a00:00
+        §fIniciando em §a03:00
         §fpara dar tempo a
         §fjogadores adicionais
         
@@ -37,7 +37,7 @@ fun getMatchScoreboard(game: String, player: String, players: List<String>): Sco
         §a${game}
         
         ${players.joinToString("\n") { "$it§f" }}
-        §F...
+        §f...
         §7${player}: §a0
         
         §fJogos: 1/4

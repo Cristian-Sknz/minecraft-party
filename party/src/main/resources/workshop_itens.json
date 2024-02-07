@@ -1,0 +1,139 @@
+{
+  "workshop_items": [
+    {
+      "name": "Arco",
+      "material": "BOW",
+      "materials": ["WEB", "LOG"]
+    },
+    {
+      "name": "Pistão",
+      "material": "PISTON_BASE",
+      "materials": ["IRON_ORE", "STONE", "LOG", "REDSTONE_ORE"]
+    },
+    {
+      "name":"Melancia enriquecida",
+      "material": "SPECKLED_MELON",
+      "materials": ["MELON_BLOCK", "GOLD_ORE"]
+    },
+    {
+      "name": "Caldeirão",
+      "material": "CAULDRON",
+      "materials": ["IRON_ORE"]
+    },
+    {
+      "name": "Escada de Madeira",
+      "material": "WOOD_STAIRS",
+      "materials": ["LOG"]
+    },
+    {
+      "name": "Vara de Pescar",
+      "material": "FISHING_ROD",
+      "materials": ["LOG", "WEB"]
+    },
+    {
+      "name": "Cama",
+      "material": "BED",
+      "materials": ["WOOL", "LOG"]
+    },
+    {
+      "name": "Picareta de Madeira",
+      "material": "WOOD_PICKAXE",
+      "materials": ["LOG", "LOG"]
+    },
+    {
+      "name": "Espada de Madeira",
+      "material": "WOOD_SWORD",
+      "materials": ["LOG", "LOG"]
+    },
+    {
+      "name": "Machado de Madeira",
+      "material": "WOOD_AXE",
+      "materials": ["LOG", "LOG"]
+    },
+    {
+      "name": "Pá de Madeira",
+      "material": "WOOD_SPADE",
+      "materials": ["LOG", "LOG"]
+    },
+    {
+      "name": "Picareta de Pedra",
+      "material": "STONE_PICKAXE",
+      "materials": ["STONE", "LOG"]
+    },
+    {
+      "name": "Espada de Pedra",
+      "material": "STONE_SWORD",
+      "materials": ["STONE", "LOG"]
+    },
+    {
+      "name": "Machado de Pedra",
+      "material": "STONE_AXE",
+      "materials": ["STONE", "LOG"]
+    },
+    {
+      "name": "Pá de Pedra",
+      "material": "STONE_SPADE",
+      "materials": ["STONE", "LOG"]
+    },
+    {
+      "name": "Picareta de Ferro",
+      "material": "IRON_PICKAXE",
+      "materials": ["IRON_ORE", "LOG"]
+    },
+    {
+      "name": "Espada de Ferro",
+      "material": "IRON_SWORD",
+      "materials": ["IRON_ORE", "LOG"]
+    },
+    {
+      "name": "Machado de Ferro",
+      "material": "IRON_AXE",
+      "materials": ["IRON_ORE", "LOG"]
+    },
+    {
+      "name": "Pá de Ferro",
+      "material": "IRON_SPADE",
+      "materials": ["IRON_ORE", "LOG"]
+    },
+    {
+      "name": "Picareta de Ouro",
+      "material": "GOLD_PICKAXE",
+      "materials": ["GOLD_ORE", "LOG"]
+    },
+    {
+      "name": "Espada de Ouro",
+      "material": "GOLD_SWORD",
+      "materials": ["GOLD_ORE", "LOG"]
+    },
+    {
+      "name": "Machado de Ouro",
+      "material": "GOLD_AXE",
+      "materials": ["GOLD_ORE", "LOG"]
+    },
+    {
+      "name": "Pá de Ouro",
+      "material": "GOLD_SPADE",
+      "materials": ["GOLD_ORE", "LOG"]
+    },
+    {
+      "name": "Picareta de Diamante",
+      "material": "DIAMOND_PICKAXE",
+      "materials": ["DIAMOND_ORE", "LOG"]
+    },
+    {
+      "name": "Espada de Diamante",
+      "material": "DIAMOND_SWORD",
+      "materials": ["DIAMOND_ORE", "LOG"]
+    },
+    {
+      "name": "Machado de Diamante",
+      "material": "DIAMOND_AXE",
+      "materials": ["DIAMOND_ORE", "LOG"]
+    },
+    {
+      "name": "Pá de Diamante",
+      "material": "DIAMOND_SPADE",
+      "materials": ["DIAMOND_ORE", "LOG"]
+    }
+  ]
+}

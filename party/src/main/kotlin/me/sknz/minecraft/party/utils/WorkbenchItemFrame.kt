@@ -23,8 +23,11 @@ typealias BlockWithFace = Pair<Block, BlockFace>
  */
 class WorkbenchItemFrame(selection: Pair<BlockWithFace, BlockWithFace>) {
 
+    constructor(selection: List<Location>, face: BlockFace):
+            this((selection[0].block to face) to (selection[1].block to face))
+
     private val blocks: Array<Block>
-    private var recipe: ShapedRecipe? = null
+    var recipe: ShapedRecipe? = null
         set(value) {
             field = value
             setItemFramesRecipe(value)
